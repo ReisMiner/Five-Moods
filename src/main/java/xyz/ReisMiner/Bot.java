@@ -31,7 +31,7 @@ public class Bot extends ListenerAdapter {
 
     //bot stuff copied from https://github.com/DV8FromTheWorld/JDA
     public static void main(String[] args) throws LoginException {
-        JDABuilder.createLight("NzQ4MjAwMDQ1MjM2NDUzMzg3.X0Z9lw.lePcVXaZXbe3AUJaf99CIWT8ZnM", GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES)
+        JDABuilder.createLight(token.token, GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES)
                 .addEventListeners(new Bot())
                 .setActivity(Activity.playing("f!menu"))
                 .build();
