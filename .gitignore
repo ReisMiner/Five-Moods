@@ -3,7 +3,6 @@
 .gradle/6.3/vcsMetadata-1/
 .gradle/6.5/vcsMetadata-1/
 build/generated/
-src/main/java/xyz/ReisMiner/config.json
 src/main/resources/
 src/test/
 src/main/java/xyz/ReisMiner/token.java

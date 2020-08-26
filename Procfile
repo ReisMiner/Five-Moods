@@ -1,1 +1,1 @@
-web java $JAVA_OPTS -jar Five-moods.jar $JAR_OPTS
+web java -jar Five-moods.jar
