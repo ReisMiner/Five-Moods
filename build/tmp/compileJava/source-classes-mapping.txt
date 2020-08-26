@@ -1,0 +1,2 @@
+xyz/ReisMiner/Bot.java
+ xyz.ReisMiner.Bot
