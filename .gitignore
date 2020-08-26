@@ -7,3 +7,5 @@ src/main/java/xyz/ReisMiner/config.json
 src/main/resources/
 src/test/
 src/main/java/xyz/ReisMiner/token.java
+out/artifacts/Five_moods_jar/Five-moods.jar
+out/artifacts/Five_moods_main_jar/Five-moods.main.jar
