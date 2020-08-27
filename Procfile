@@ -1,1 +1,1 @@
-web java -jar Five-moods.jar
+worker: java -jar Five-moods.jar
