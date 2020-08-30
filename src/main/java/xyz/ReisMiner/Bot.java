@@ -90,6 +90,6 @@ public class Bot extends ListenerAdapter {
         Element menu_title = body.select(".item-content .menu-title").get(number);
         Element menu_description = body.select(".item-content .menu-description").get(number);
         Element menu_prices = body.select(".item-content .menu-prices").get(number);
-        return menuline.text() + menu_title.text() + menu_description.text() + menu_prices.text();
+        return menuline.text()+"\n" + menu_title.text()+"\n" + menu_description.text()+"\n" + menu_prices.text();
     }
 }
