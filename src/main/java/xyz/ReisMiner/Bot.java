@@ -8,12 +8,15 @@ import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import org.apache.commons.collections4.Get;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -22,12 +25,14 @@ public class Bot extends ListenerAdapter {
     static JDABuilder builder;
     //five moods menu website
     static String url = "https://siemens.sv-restaurant.ch/de/menuplan/five-moods/";
-    static Document document;
+    static String gibz ="https://zfv.ch/de/microsites/restaurant-treff/menuplan";
+    static Document document,documentGibz;
 
     //i have no idea what this is for. the ide made that xD
     static {
         try {
             document = Jsoup.connect(url).get();
+            documentGibz = Jsoup.connect(gibz).get();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -47,7 +52,7 @@ public class Bot extends ListenerAdapter {
     public void onMessageReceived(MessageReceivedEvent event) {
         Message msg = event.getMessage();
         //f!menu command
-        if (msg.getContentRaw().equals("f!menu")) {
+        if (msg.getContentRaw().equalsIgnoreCase("f!moods")) {
             MessageChannel channel = event.getChannel();
             //sending the message
             channel.sendMessage("```" + getMenu(0) + "\n============================\n"
@@ -57,13 +62,26 @@ public class Bot extends ListenerAdapter {
                     "```").queue();
         }
         //f!help command
-        if (msg.getContentRaw().equals("f!help")) {
+        if (msg.getContentRaw().equalsIgnoreCase("f!help")) {
             MessageChannel channel = event.getChannel();
-            long time = System.currentTimeMillis();
             //sending the message
-            builder.setActivity(Activity.playing(String.valueOf(time)));
             channel.sendMessage("```To see the menus from today enter f!menu." +
                     "\nThat's the only command.\nWell. If you don't count this one.```").queue();
+        }
+        if (msg.getContentRaw().equalsIgnoreCase("f!gibz")) {
+            MessageChannel channel = event.getChannel();
+            String mesg = "```";
+            //sending the message
+            for(int j =0;j<45;j++){
+                if(GetGIBZ(j).parent().parent().attr("data-date").contains(LocalDate.now().toString())){
+                    if(LocalDate.now().getDayOfWeek().equals(DayOfWeek.SATURDAY)||LocalDate.now().getDayOfWeek().equals(DayOfWeek.SUNDAY)){
+                        channel.sendMessage("```lol. du gasch am wucheend id schuel? xD```").queue();
+                        break;
+                    }
+                    mesg+=GetGIBZ(j).text()+"\n================================================\n";
+                }
+            }
+            channel.sendMessage(mesg+"```").queue();
         }
     }
     //changing activity every 10 seconds to cycle through the menus from today
@@ -73,7 +91,7 @@ public class Bot extends ListenerAdapter {
 
             @Override
             public void run() {
-                event.getJDA().getPresence().setActivity(Activity.playing("f!menu | "+document.select("body")
+                event.getJDA().getPresence().setActivity(Activity.playing("f!moods | "+document.select("body")
                         .get(0).select(".item-content .menu-title").get(counter).text()+ " -> "
                         +document.select("body").get(0).select(".item-content .menu-prices").get(counter).text()));
                 counter++;
@@ -91,5 +109,11 @@ public class Bot extends ListenerAdapter {
         Element menu_description = body.select(".item-content .menu-description").get(number);
         Element menu_prices = body.select(".item-content .menu-prices").get(number);
         return menuline.text()+"\n" + menu_title.text()+"\n" + menu_description.text()+"\n" + menu_prices.text();
+    }
+    public static Element GetGIBZ(int number) {
+        Element body = documentGibz.select("body").get(0);
+        documentGibz.select(".txt-slide").remove();
+        Element menuline = body.select(".menu .txt-hold").get(number);
+        return menuline;
     }
 }
