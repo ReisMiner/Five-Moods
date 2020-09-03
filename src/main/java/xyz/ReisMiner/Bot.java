@@ -29,7 +29,6 @@ public class Bot extends ListenerAdapter {
     static String gibz ="https://zfv.ch/de/microsites/restaurant-treff/menuplan";
     static Document document,documentGibz;
 
-    //i have no idea what this is for. the ide made that xD
     static void load(){
         try {
             document = Jsoup.connect(url).get();
@@ -49,7 +48,6 @@ public class Bot extends ListenerAdapter {
         load();
     }
 
-    //bot stuff copied also from https://github.com/DV8FromTheWorld/JDA
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         Message msg = event.getMessage();
@@ -84,7 +82,7 @@ public class Bot extends ListenerAdapter {
                         channel.sendMessage("```lol. du gasch am wucheend id schuel? xD```").queue();
                         break;
                     }
-                    mesg+=GetGIBZ(j).text()+"\n================================================\n";
+                    mesg+=GetGIBZ(j).text()+"\n=============================================\n";
                 }
             }
             channel.sendMessage(mesg+"```").queue();
@@ -92,6 +90,7 @@ public class Bot extends ListenerAdapter {
     }
     //changing activity every 10 seconds to cycle through the menus from today
     public void onReady(ReadyEvent event) {
+        load();
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
 
