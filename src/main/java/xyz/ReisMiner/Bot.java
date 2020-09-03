@@ -22,6 +22,7 @@ import java.util.TimerTask;
 
 public class Bot extends ListenerAdapter {
     static int counter=0;
+    static String date="";
     static JDABuilder builder;
     //five moods menu website
     static String url = "https://siemens.sv-restaurant.ch/de/menuplan/five-moods/";
@@ -29,10 +30,11 @@ public class Bot extends ListenerAdapter {
     static Document document,documentGibz;
 
     //i have no idea what this is for. the ide made that xD
-    static {
+    static void load(){
         try {
             document = Jsoup.connect(url).get();
             documentGibz = Jsoup.connect(gibz).get();
+            System.out.println("loaded Sites");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -44,7 +46,7 @@ public class Bot extends ListenerAdapter {
         builder.createLight(token.token, GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES)
                 .addEventListeners(new Bot())
                 .build();
-
+        load();
     }
 
     //bot stuff copied also from https://github.com/DV8FromTheWorld/JDA
@@ -53,6 +55,11 @@ public class Bot extends ListenerAdapter {
         Message msg = event.getMessage();
         //f!menu command
         if (msg.getContentRaw().equalsIgnoreCase("f!moods")) {
+            if(!LocalDate.now().toString().equals(date)){
+                date = LocalDate.now().toString();
+                System.out.println(date+" localdate -> "+LocalDate.now().toString());
+                load();
+            }
             MessageChannel channel = event.getChannel();
             //sending the message
             channel.sendMessage("```" + getMenu(0) + "\n============================\n"
@@ -65,8 +72,7 @@ public class Bot extends ListenerAdapter {
         if (msg.getContentRaw().equalsIgnoreCase("f!help")) {
             MessageChannel channel = event.getChannel();
             //sending the message
-            channel.sendMessage("```To see the menus from today enter f!menu." +
-                    "\nThat's the only command.\nWell. If you don't count this one.```").queue();
+            channel.sendMessage("```To see the menus from today enter f!moods or f!gibz.```").queue();
         }
         if (msg.getContentRaw().equalsIgnoreCase("f!gibz")) {
             MessageChannel channel = event.getChannel();
@@ -100,6 +106,7 @@ public class Bot extends ListenerAdapter {
                 }
             }
         }, 0, 10000 );
+
     }
     //getting the text of the html
     public static String getMenu(int number) {
