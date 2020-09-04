@@ -76,14 +76,18 @@ public class Bot extends ListenerAdapter {
             MessageChannel channel = event.getChannel();
             String mesg = "```";
             //sending the message
-            for(int j =0;j<45;j++){
-                if(GetGIBZ(j).parent().parent().attr("data-date").contains(LocalDate.now().toString())){
-                    if(LocalDate.now().getDayOfWeek().equals(DayOfWeek.SATURDAY)||LocalDate.now().getDayOfWeek().equals(DayOfWeek.SUNDAY)){
-                        channel.sendMessage("```lol. du gasch am wucheend id schuel? xD```").queue();
-                        break;
+            try {
+                for(int j =0;j<62;j++){
+                    if(GetGIBZ(j).parent().parent().attr("data-date").contains(LocalDate.now().toString())){
+                        if(LocalDate.now().getDayOfWeek().equals(DayOfWeek.SATURDAY)||LocalDate.now().getDayOfWeek().equals(DayOfWeek.SUNDAY)){
+                            channel.sendMessage("```lol. du gasch am wucheend id schuel? xD```").queue();
+                            break;
+                        }
+                        mesg+=GetGIBZ(j).text()+"\n=============================================\n";
                     }
-                    mesg+=GetGIBZ(j).text()+"\n=============================================\n";
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             channel.sendMessage(mesg+"```").queue();
         }
