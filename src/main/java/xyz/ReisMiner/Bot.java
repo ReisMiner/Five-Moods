@@ -73,6 +73,7 @@ public class Bot extends ListenerAdapter {
             //sending the message
             channel.sendMessage("```Commands für d Menüs sind f!gibz oder f!moods```").queue();
         }
+        //f!gibz command
         if (msg.getContentRaw().equalsIgnoreCase("f!gibz")) {
             int gibz_count=0;
             gibz_we = false;
@@ -101,6 +102,13 @@ public class Bot extends ListenerAdapter {
                 channel.sendMessage(mesg + "```").queue();
             }
 
+        }
+        //f!reload
+        if (msg.getContentRaw().equalsIgnoreCase("f!reload")) {
+            MessageChannel channel = event.getChannel();
+            //sending the message
+            load();
+            channel.sendMessage("```Reloaded```").queue();
         }
     }
 
